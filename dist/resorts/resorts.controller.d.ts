@@ -2,7 +2,7 @@ import { ResortsService } from './resorts.service.js';
 export declare class ResortsController {
     private readonly resortsService;
     constructor(resortsService: ResortsService);
-    findAll(page?: string, limit?: string): Promise<{
+    findAll(page?: string, limit?: string, search?: string): Promise<{
         success: boolean;
         data: {
             id: number;

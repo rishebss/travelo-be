@@ -20,8 +20,8 @@ let ResortsController = class ResortsController {
     constructor(resortsService) {
         this.resortsService = resortsService;
     }
-    findAll(page, limit) {
-        return this.resortsService.findAll(page ? Number(page) : 1, limit ? Number(limit) : 12);
+    findAll(page, limit, search) {
+        return this.resortsService.findAll(page ? Number(page) : 1, limit ? Number(limit) : 12, search);
     }
     findOne(id) {
         return this.resortsService.findOne(id);
@@ -49,8 +49,9 @@ __decorate([
     Get(),
     __param(0, Query('page')),
     __param(1, Query('limit')),
+    __param(2, Query('search')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, String, String]),
     __metadata("design:returntype", void 0)
 ], ResortsController.prototype, "findAll", null);
 __decorate([

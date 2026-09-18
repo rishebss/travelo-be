@@ -3,7 +3,7 @@ import * as schema from '../db/schema.js';
 export declare class ResortsService {
     private db;
     constructor(db: NodePgDatabase<typeof schema>);
-    findAll(page?: number, limit?: number): Promise<{
+    findAll(page?: number, limit?: number, search?: string): Promise<{
         success: boolean;
         data: {
             id: number;

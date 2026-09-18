@@ -11,7 +11,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 import { Injectable, Inject, NotFoundException } from '@nestjs/common';
-import { eq, desc, sql } from 'drizzle-orm';
+import { eq, desc, sql, or, ilike } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { resorts } from '../db/schema.js';
 let ResortsService = class ResortsService {
@@ -19,15 +19,21 @@ let ResortsService = class ResortsService {
     constructor(db) {
         this.db = db;
     }
-    async findAll(page = 1, limit = 12) {
+    async findAll(page = 1, limit = 12, search) {
         const offset = (page - 1) * limit;
+        const term = search?.trim();
+        const where = term
+            ? or(ilike(resorts.location, `%${term}%`), ilike(resorts.description, `%${term}%`))
+            : undefined;
         const [countResult] = await this.db
             .select({ count: sql `count(*)` })
-            .from(resorts);
+            .from(resorts)
+            .where(where);
         const total = Number(countResult.count);
         const data = await this.db
             .select()
             .from(resorts)
+            .where(where)
             .orderBy(desc(resorts.createdAt))
             .limit(limit)
             .offset(offset);
